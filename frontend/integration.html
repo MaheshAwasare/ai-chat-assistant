@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Widget Integration Example</title>
+    <!-- Include the CSS for the chat widget (from the CDN) -->
+    
+    <script src="chat-widget.bundle.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>Welcome to Our Website</h1>
+        <p>This is an example page to demonstrate integrating the AI chat widget into a webpage.</p>
+    </header>
+
+    <!-- Add some sample content -->
+    <section>
+        <h2>About Us</h2>
+        <p>We are a team of developers passionate about creating useful tools and widgets.</p>
+    </section>
+
+    <section>
+        <h2>How It Works</h2>
+        <p>The chat widget provides an interactive way to communicate with our AI assistant. Feel free to ask anything!</p>
+    </section>
+
+    <!-- Chat Widget Container -->
+    <div id="ai-chat-widget" data-api-url="http://127.0.0.1:5000/api/send-message"></div>
+
+    <footer>
+        <p>© 2025 Your Website. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Initialize the chat widget
+        document.addEventListener("DOMContentLoaded", () => {
+            // Automatically initialize the chat widget when the page loads
+            window.ChatWidget.init({
+                apiUrl: 'http://127.0.0.1:5000/api/send-message',
+                containerId: 'ai-chat-widget',
+            });
+        });
+    </script>
+</body>
+
+</html>
