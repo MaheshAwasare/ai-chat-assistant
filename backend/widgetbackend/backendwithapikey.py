@@ -31,31 +31,25 @@ print(customers_data)
 @app.route('/api/send-message', methods=['POST'])
 def send_message():
     try:
-        data = request.json
-        print(data)
-        print('1')
-        customer_id = request.args.get('customerId')
-        print('1')
-        api_key = request.args.get('apiKey')
-        print('1')
-        print(customer_id, api_key)
-        print('1')
-        # Validate the Customer ID and API Key
+        data = request.json  # Extract JSON payload
+        if not data:
+            return jsonify({'error': 'Invalid request format. JSON payload is required'}), 400
+
+        # Extract customerId and apiKey from the JSON payload
+        customer_id = data.get('customerId')
+        api_key = data.get('apiKey')
+        user_message = data.get('message')
+
+        # Validate inputs
         if not customer_id or not api_key:
-            print(customer_id, " customer id not found")
             return jsonify({'error': 'Customer ID or API Key missing'}), 400
-
-        valid_api_key = customers_data.get(customer_id)
-
-        if valid_api_key != api_key:
-            print(valid_api_key + " api key not found")
-            return jsonify({'error': 'Invalid Customer ID or API Key'}), 403
-        user_message = data['message']
-        if not data or 'message' not in data:
-            print("Message ", user_message)
+        if not user_message:
             return jsonify({'error': 'No message provided'}), 400
 
-
+        # Validate Customer ID and API Key
+        valid_api_key = customers_data.get(customer_id)
+        if valid_api_key != api_key:
+            return jsonify({'error': 'Invalid Customer ID or API Key'}), 403
 
         # Use Ollama to get a response
         response = ollama.chat(
@@ -78,7 +72,7 @@ def send_message():
             return jsonify({'error': 'Error communicating with the AI model'}), 500
 
     except Exception as e:
-        print('Error ', e)
+        print('Error:', e)
         return jsonify({'error': str(e)}), 500
 
 
