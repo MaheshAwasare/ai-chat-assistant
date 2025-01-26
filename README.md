@@ -10,7 +10,6 @@ An AI-powered chat widget that can be easily integrated into any website to prov
 - [Installation](#installation)
 - [Usage](#usage)
 - [Configuration](#configuration)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## Overview
@@ -71,3 +70,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 </script>
+
+##License
+
+### Notes:
+- Adjust paths, URLs, and placeholders as needed based on your specific implementation.
+- Ensure any dependencies (like `marked.js`) are correctly referenced if they're external to your bundle.
