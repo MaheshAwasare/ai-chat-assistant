@@ -71,7 +71,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
-##License
+```
+
+## License
 
 ### Notes:
 - Adjust paths, URLs, and placeholders as needed based on your specific implementation.
