@@ -8,7 +8,7 @@
     <!-- Include the CSS for the chat widget (from the CDN) -->
     
     <!-- <script src="chat-widget.bundle.js"></script>-->
-    <script src="https://cdn.jsdelivr.net/gh/MaheshAwasare/ai-chat-assistant/frontend/chat-widget.bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/logspace-ai/langflow-embedded-chat@v1.0.7/dist/build/static/js/bundle.min.js"></script>
 </head>
 
 <body>
@@ -29,7 +29,12 @@
     </section>
 
     <!-- Chat Widget Container -->
-    <div id="ai-chat-widget" data-api-url="http://127.0.0.1:5000/api/send-message" customerId= '12345' api_key='abcde12345'></div>
+    <langflow-chat
+    window_title="Basic Flow"
+    flow_id="e7dbf6f2-4429-4dd2-8e04-5c4d3c451a25"
+    host_url="http://127.0.0.1:7860"
+
+  ></langflow-chat>
 
     <footer>
         <p>© 2025 Your Website. All rights reserved.</p>
@@ -37,15 +42,7 @@
 
     <script>
         // Initialize the chat widget
-        document.addEventListener("DOMContentLoaded", () => {
-            // Automatically initialize the chat widget when the page loads
-            window.ChatWidget.init({
-                apiUrl: 'http://127.0.0.1:5000/api/send-message',
-                containerId: 'ai-chat-widget',
-                customerId: '12345',
-                api_key: 'abcde12345'
-            });
-        });
+     
     </script>
 </body>
 

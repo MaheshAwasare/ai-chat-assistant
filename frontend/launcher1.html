@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BestAI Chat Assistant</title>
+    <style>
+        /* Basic Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* Body Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background-color: #c7e7df;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background-color: #ffcc00;
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        header ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        header li {
+            display: inline-block;
+        }
+
+        header a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        header a:hover {
+            color: #ffcc00;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background-image: url('https://via.placeholder.com/1920x1080'); /* Add your hero image URL */
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 60px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+
+        .btn-primary {
+            padding: 12px 30px;
+            background-color: #ffcc00;
+            color: #333;
+            font-size: 1.2rem;
+            text-decoration: none;
+            border-radius: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background-color: #ffd700;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+
+        section p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+        }
+
+        .pricing-box {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .pricing-box .box {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .pricing-box .box h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .pricing-box .box p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background-color: #eaeaea;
+            padding: 40px 20px;
+        }
+
+        .testimonial-item {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        footer a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #ffd700;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+        </ul>
+    </header>
+
+    <div id="home" class="hero">
+        <h1>Revolutionize Your Website with BestAI Chat Assistant</h1>
+        <p>Integrate an intelligent, embeddable chat assistant into your website and enhance user interaction.</p>
+        <a href="#contact" class="btn-primary">Get Started</a>
+    </div>
+
+    <section id="about">
+        <h2>About BestAI</h2>
+        <p>BestAI is a cutting-edge platform providing AI-powered chat assistants for websites. Our solutions make websites smarter, more interactive, and user-friendly.</p>
+    </section>
+
+    <section id="pricing">
+        <h2>Pricing Plans</h2>
+        <p>Affordable pricing for everyone.</p>
+        <div class="pricing-box">
+            <div class="box">
+                <h3>Basic</h3>
+                <p>$9/month</p>
+                <p>Basic features for small websites</p>
+            </div>
+            <div class="box">
+                <h3>Pro</h3>
+                <p>$29/month</p>
+                <p>Advanced features and integrations</p>
+            </div>
+            <div class="box">
+                <h3>Enterprise</h3>
+                <p>Custom pricing</p>
+                <p>Tailored for large organizations</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <p>Email: support@bestai.inc</p>
+        <p>Phone: 1-800-123-4567</p>
+    </section>
+
+    <section id="testimonials" class="testimonials">
+        <h2>What Our Customers Say</h2>
+        <div class="testimonial-item">
+            <p>"BestAI's chat assistant is a game-changer for our website. It has increased engagement by 50%!"</p>
+            <footer>- Jane Doe, CEO of AwesomeCorp</footer>
+        </div>
+        <div class="testimonial-item">
+            <p>"Our customers love the chat assistant. It's fast, responsive, and easy to integrate."</p>
+            <footer>- John Smith, Product Manager at WebSolutions</footer>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 BestAI.inc | <a href="mailto:support@bestai.inc">Contact Us</a></p>
+    </footer>
+</body>
+</html>

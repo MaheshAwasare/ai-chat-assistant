@@ -1,0 +1,92 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 50px 20px;
+  }
+  
+  .hero {
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    padding: 150px 0;
+  }
+  
+  .hero h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+  }
+  
+  .btn {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: #fff;
+    color: #007bff;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  
+  .about,
+  .how-it-works,
+  .benefits,
+  .pricing,
+  .testimonials,
+  .contact {
+    padding: 50px 0;
+  }
+  
+  .how-it-works .row {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .benefits .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .pricing .pricing-box {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .pricing .pricing-box.recommended {
+    border: 2px solid #007bff;
+  }
+  
+  .testimonial-slider {
+    overflow: hidden;
+  }
+  
+  .testimonial {
+    margin-bottom: 30px;
+  }
+  
+  footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+  }
+  
+  /* Responsive Design (Optional) */
+  @media (max-width: 768px) {
+    .hero {
+      padding: 80px 0;
+    }
+  
+    .how-it-works .row,
+    .benefits .row {
+      flex-direction: column;
+    }
+  }

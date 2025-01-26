@@ -249,6 +249,14 @@
       const apiUrl = document
         .getElementById("ai-chat-widget")
         ?.getAttribute("data-api-url");
+
+        const customerId = document
+        .getElementById("ai-chat-widget")
+        ?.getAttribute("customerId");
+        
+        const apiKey = document
+        .getElementById("ai-chat-widget")
+        ?.getAttribute("apiKey"); 
   
       if (!apiUrl) {
         console.error(
@@ -260,6 +268,8 @@
       ChatWidget.init({
         apiUrl: apiUrl,
         containerId: "ai-chat-widget",
+        customerId: customerId,
+        apiKey: apiKey
       });
     });
   
