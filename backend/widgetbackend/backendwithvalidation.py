@@ -65,6 +65,38 @@ def send_message():
             ]
         )
 
+        '''
+        import requests
+       
+        API_URL = "https://api-inference.huggingface.co/models/cardiffnlp/twitter-roberta-base-sentiment-latest"
+        headers = {"Authorization": "Bearer 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"}
+        payload = {
+            "inputs": "Today is a great day",
+        }
+        print()
+        response1 = requests.post(API_URL, headers=headers, json=payload)
+        response1.json()
+
+        print(response1.json())
+       '''
+
+        from huggingface_hub import InferenceClient
+
+        client = InferenceClient(
+            "meta-llama/Meta-Llama-3-8B-Instruct",
+            token="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",
+        )
+
+        output = client.chat.completions.create(
+            model="meta-llama/Meta-Llama-3-8B-Instruct",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": user_message},
+            ],
+            stream=False,
+            max_tokens=1024,
+        )
+        print("Output   ", output)
         # Check if a response was received
         if response and 'message' in response:
             ai_message = response['message']['content']

@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import ollama
-
+import os
+from dotenv import load_dotenv
 app = Flask(__name__)
 CORS(app)
 
@@ -39,6 +40,7 @@ def send_message():
         customer_id = data.get('customerId')
         api_key = data.get('apiKey')
         user_message = data.get('message')
+        mode = os.getenv("MODE", "local")
 
         # Validate inputs
         if not customer_id or not api_key:
@@ -70,6 +72,39 @@ def send_message():
             return jsonify(formatted_response)
         else:
             return jsonify({'error': 'Error communicating with the AI model'}), 500
+
+        from huggingface_hub import InferenceClient
+
+        client = InferenceClient(
+            "meta-llama/Meta-Llama-3-8B-Instruct",
+            token="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",
+        )
+
+        output = client.chat.completions.create(
+            model="meta-llama/Meta-Llama-3-8B-Instruct",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": user_message},
+            ],
+            stream=False,
+            max_tokens=1024,
+        )
+        print("Output   ", output)
+        assistant_message = output.choices[0].message.content
+        print(assistant_message)
+        if assistant_message :
+            #ai_message = response['message']['content']
+            formatted_response = {
+                'response': assistant_message,
+                'format': 'markdown'  # Add format indicator
+            }
+            print("AI Response:", formatted_response)  # Print the response for debugging
+            return jsonify(formatted_response)
+        else:
+            return jsonify({'error': 'Error communicating with the AI model'}), 500
+
+
+
 
     except Exception as e:
         print('Error:', e)
