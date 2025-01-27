@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Widget Playground</title>
+    <!-- Include the updated chat widget script -->
+    <script src="chat-widget-premium.bundle.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #8f7235;
+            color: #cbc7cf;
+            text-align: center;
+        }
+
+        header {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+        }
+
+        section {
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background:#8f7235;
+            border-radius: 10px;
+            max-width: 600px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        section p {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        #ai-chat-widget {
+            margin: 2rem auto;
+            width: 90%;
+            max-width: 400px;
+            height: 500px;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.8);
+            overflow: hidden;
+        }
+
+        footer {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>AI Chat Widget Playground</h1>
+        <p>Test and explore our AI chat widget in action!</p>
+    </header>
+
+    <section>
+        <h2>About This Playground</h2>
+        <p>This page is designed to demonstrate and test the AI chat widget capabilities. Feel free to explore its features and ask questions!</p>
+    </section>
+
+    <section>
+        <h2>Widget Features</h2>
+        <p>The chat widget is a seamless integration to enhance user experience. Interact with our AI assistant to discover its potential.</p>
+    </section>
+
+    <!-- Chat Widget Container -->
+    <div id="ai-chat-widget"></div>
+
+    <footer>
+        <p>© 2025 AI Chat Widget Playground. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Initialize the chat widget
+            window.ChatWidget.init({
+                apiUrl: 'https://ai-ca-backend.onrender.com/api/send-message',
+                containerId: 'ai-chat-widget',
+                customerId: '12345', 
+                apiKey: 'abcde12345' 
+            });
+        });
+    </script>
+</body>
+
+</html>
