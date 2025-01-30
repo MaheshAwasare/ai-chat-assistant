@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global AI Assistants</title>
+    <script src="chat-widget-scraper.bundle.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        header {
+            background: #0073e6;
+            color: white;
+            padding: 20px;
+        }
+        section {
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        footer {
+            background: #222;
+            color: white;
+            padding: 10px;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Global AI Assistants</h1>
+        <p>Empowering Businesses with AI-Powered Virtual Assistants</p>
+    </header>
+
+    <section>
+        <h2>About Us</h2>
+        <p>Founded in Pune, Maharashtra, India, Global AI Assistants is revolutionizing business communication with 
+        state-of-the-art AI-powered virtual assistants. Our solutions help businesses streamline operations, 
+        automate customer support, and enhance productivity.</p>
+    </section>
+
+    <section>
+        <h2>Our AI Assistants</h2>
+        <p>Our AI assistants are built with advanced natural language processing, machine learning, and seamless 
+        integration capabilities. Whether you need an AI chatbot for customer service, a virtual employee, or a 
+        personal AI companion, we have the right solution for you.</p>
+    </section>
+
+    <section>
+        <h2>Contact Us</h2>
+        <p>Email: contact@globalaiassistants.com</p>
+        <p>Phone: +91 98765 43210</p>
+    </section>
+
+    <div id="ai-chat-widget"></div>
+
+  
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            window.ChatWidget.init({
+                apiUrl: 'http://127.0.0.1:5000/api',
+                containerId: 'ai-chat-widget',
+                customerId: '12345', 
+                apiKey: 'abcde12345' 
+            });
+        });
+    </script>
+</body>
+
+</html>
