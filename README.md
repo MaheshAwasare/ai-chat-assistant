@@ -1,80 +1,120 @@
-# AI Chat Widget
+# 🤖 AI Chat Widget
 
-An AI-powered chat widget that can be easily integrated into any website to provide instant messaging capabilities with an intelligent assistant.
 
-## Table of Contents
 
-- [Overview](#overview)
-- [Features](#features)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Configuration](#configuration)
-- [License](#license)
+A powerful, context-aware AI chat widget that can be embedded into any website to provide intelligent assistance based on page content.
 
-## Overview
+[![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
+[![Flask](https://img.shields.io/badge/flask-2.0%2B-green.svg)](https://flask.palletsprojects.com/)
+[![JavaScript](https://img.shields.io/badge/javascript-ES6%2B-yellow.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
-The AI Chat Widget is a versatile tool designed to integrate seamlessly into any website, providing users with immediate access to an AI-driven chat interface. This widget supports markdown responses and can be customized for various use cases.
+## ✨ Features
 
-## Features
+- 🔍 **Real-time Page Context Analysis**: Automatically captures and understands webpage content
+- 🧠 **Dual AI Backend Support**: 
+  - Local: Ollama integration
+  - Remote: Hugging Face models
+- 🔒 **Secure Authentication**: Customer ID and API key validation
+- 📱 **Responsive Design**: Works seamlessly on all devices
+- 🔄 **Dynamic Updates**: Monitors and adapts to page content changes
+- 💬 **Rich Text Support**: Markdown formatting for responses
 
-- **Easy Integration**: Embeddable via a simple script tag.
-- **AI-Powered Responses**: Interact with intelligent chatbot functionality.
-- **Markdown Support**: Utilizes `marked.js` for parsing Markdown in responses.
-- **Customizable Appearance**: Styles are customizable to match your website's design.
-- **Responsive Design**: Works on desktops, tablets, and mobile devices.
+## 🚀 Quick Start
 
-## Requirements
+### Backend Setup
 
-- A modern web browser (Chrome, Firefox, Safari).
-- Internet access for fetching the widget script.
-- An API endpoint for processing chat messages.
-
-## Installation
-
-To integrate the AI Chat Widget into your website:
-
-1. Add a container `<div>` with an ID of `ai-chat-widget` on your webpage where you want the widget to appear:
-
-    ```html
-    <div id="ai-chat-widget"></div>
-    ```
-
-2. Include the following script in the `<head>` section of your HTML file or just before the closing `</body>` tag:
-
-    ```html
-    <script src="https://cdn.jsdelivr.net/gh/MaheshAwasare/ai-chat-assistant/frontend/chat-widget.bundle.js"></script>
-    ```
-
-3. Ensure that you have an API endpoint ready to handle message requests.
-
-## Usage
-
-Once installed, the widget will appear as a button on your website. Clicking this button will open the chat interface. Users can type messages and receive responses in real-time from the AI assistant.
-
-## Configuration
-
-You can configure the widget by modifying the initialization script:
-
-```html
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const customerID = 'YOUR_CUSTOMER_ID';  // Example: '12345'
-    const apiKey = 'YOUR_API_KEY';          // Example: 'abcde12345'
-
-    window.ChatWidget.init({
-        apiUrl: `http://127.0.0.1:5000/api/send-message?customerId=${customerID}&apiKey=${apiKey}`,
-        containerId: 'ai-chat-widget',
-        customerId: customerID,
-        apiKey: apiKey
-    });
-});
-</script>
-
+1. Install Python dependencies:
+```bash
+pip install flask flask-cors python-dotenv huggingface-hub ollama
 ```
 
-## License
+2. Set up environment variables in `.env`:
+```env
+HF_API_TOKEN=your_huggingface_token
+MODE=remote  # or 'local' for Ollama
+PORT=5000
+```
 
-### Notes:
-- Adjust paths, URLs, and placeholders as needed based on your specific implementation.
-- Ensure any dependencies (like `marked.js`) are correctly referenced if they're external to your bundle.
+3. Create a `customers.txt` file:
+```text
+customer_id_1,api_key_1
+customer_id_2,api_key_2
+```
+
+4. Start the Flask server:
+```bash
+python app.py
+```
+
+### Frontend Integration
+
+1. Add the widget container to your HTML:
+```html
+<div id="ai-chat-widget" 
+     data-api-url="http://your-backend-url/api/send-message"
+     customerId="your_customer_id"
+     apiKey="your_api_key">
+</div>
+```
+
+2. Include the chat widget script:
+```html
+<script src="path/to/chat-widget.js"></script>
+```
+
+## 🔧 Configuration
+
+### Backend Configuration
+
+The Flask backend supports two modes:
+- `local`: Uses Ollama for AI responses
+- `remote`: Uses Hugging Face models (default)
+
+### Frontend Configuration
+
+The chat widget can be customized through CSS variables:
+```css
+:root {
+  --primary-gradient: linear-gradient(135deg, #6a11cb, #2575fc);
+  --background-color: #f4f7f6;
+  --text-color: #333;
+  /* ... other variables ... */
+}
+```
+
+## 🔌 API Endpoints
+
+| Endpoint | Method | Description |
+|----------|---------|-------------|
+| `/api/send-message` | POST | Send user message and get AI response |
+| `/api/page-context` | POST | Store initial page context |
+| `/api/page-context-update` | POST | Update page context on changes |
+
+## 🛡️ Security
+
+- Customer authentication using ID and API key
+- Session-based context storage
+- Secure CORS configuration
+- Input validation and sanitization
+
+## 🖼️ Screenshots
+
+
+![image](https://github.com/user-attachments/assets/76108aa5-d5eb-490f-9e75-397fbdc789b0)
+
+
+## 📝 License
+
+MIT License - feel free to use this in your projects!
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📞 Support
+
+For support, email  or create an issue in this repository.
+
+---
+
+Made with ❤️ by AICA-LINK
