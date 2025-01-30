@@ -59,7 +59,7 @@ python app.py
 
 2. Include the chat widget script:
 ```html
-<script src="path/to/chat-widget.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/MaheshAwasare/ai-chat-assistant/frontend/chat-widget-scraper.bundle.js"></script>
 ```
 
 ## 🔧 Configuration
