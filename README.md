@@ -51,12 +51,12 @@ python app.py
 1. Add the widget container to your HTML:
 ```html
 <div id="ai-chat-widget" 
-     data-api-url="http://your-backend-url/api/send-message"
+     data-api-url="http://backend-url/api/send-message"
      customerId="your_customer_id"
      apiKey="your_api_key">
 </div>
 ```
-
+For backend url, you can connect with us.
 2. Include the chat widget script:
 ```html
 <script src="https://cdn.jsdelivr.net/gh/MaheshAwasare/ai-chat-assistant/frontend/chat-widget-scraper.bundle.js"></script>
