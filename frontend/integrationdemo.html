@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global AI Assistants</title>
-    <script src="chat-widget-scraper.bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/MaheshAwasare/ai-chat-assistant/frontend/chat-widget-scraper.bundle.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -69,7 +69,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             window.ChatWidget.init({
-                apiUrl: 'http://127.0.0.1:5000/api',
+                apiUrl: 'https://ai-ca-backend.onrender.com/api',
                 containerId: 'ai-chat-widget',
                 customerId: '12345', 
                 apiKey: 'abcde12345' 
