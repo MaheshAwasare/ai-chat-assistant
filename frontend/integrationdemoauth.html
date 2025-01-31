@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global AI Assistants</title>
-    <script src="https://cdn.jsdelivr.net/gh/MaheshAwasare/ai-chat-assistant/frontend/chat-widget-scraper.bundle.js"></script>
+    <script src="chat-widget-autho.bundle.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -62,7 +62,13 @@
         <p>Phone: +91 98765 43210</p>
     </section>
 
-    <div id="ai-chat-widget"></div>
+    <div id="ai-chat-widget"
+    data-api-url="http://127.0.0.1:5000/api"
+    data-customer-id="cust_123"
+    data-api-key="sk_test_abcdef123456789"
+    data-username="best@best.com"
+    data-password="password123">
+</div>
 
   
 
@@ -71,8 +77,11 @@
             window.ChatWidget.init({
                 apiUrl: 'http://127.0.0.1:5000/api',
                 containerId: 'ai-chat-widget',
-                customerId: '12345', 
-                apiKey: 'abcde12345' 
+                customerId: 'cust_123', 
+                
+                apiKey: 'abcde12345',
+                username: "best@best.com",
+                password : "password123"
             });
         });
     </script>

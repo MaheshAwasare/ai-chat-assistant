@@ -1,6 +1,5 @@
 (function () {
-  
-  const styles = `
+    const styles = `
     :root {
       --primary-gradient: linear-gradient(135deg, #6a11cb, #2575fc);
       --background-color: #f4f7f6;
@@ -155,58 +154,59 @@
       background: #4a90e2;
     }
   `;
-
-  const styleSheet = document.createElement("style");
-  styleSheet.type = "text/css";
-  styleSheet.innerText = styles;
-  document.head.appendChild(styleSheet);
-
-
-
-  // Utility Functions
-  const generateSessionId = () => {
-    return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-  };
-
-  const scrapePageContent = () => {
-    const bodyText = document.body.innerText;
-    
-    const metaTags = Array.from(document.getElementsByTagName('meta'))
-      .map(meta => ({
-        name: meta.getAttribute('name') || meta.getAttribute('property'),
-        content: meta.getAttribute('content')
-      }))
-      .filter(meta => meta.name && meta.content);
-
-    const headings = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'))
-      .map(heading => ({
-        level: heading.tagName,
-        text: heading.innerText.trim()
-      }));
-
-    const links = Array.from(document.getElementsByTagName('a'))
-      .map(link => ({
-        text: link.innerText.trim(),
-        href: link.href
-      }));
-
-    const mainContent = Array.from(document.querySelectorAll('main, article, [role="main"]'))
-      .map(element => element.innerText.trim());
-
-    return {
-      url: window.location.href,
-      title: document.title,
-      metaTags,
-      headings,
-      links,
-      mainContent,
-      fullText: bodyText
+  
+    const styleSheet = document.createElement("style");
+    styleSheet.type = "text/css";
+    styleSheet.innerText = styles;
+    document.head.appendChild(styleSheet);
+  
+    // Utility Functions
+    const generateSessionId = () => {
+      return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     };
-  };
-
-  // Load scripts sequentially and wait for them to be ready
+  
+    const scrapePageContent = () => {
+      const bodyText = document.body.innerText;
+      
+      const metaTags = Array.from(document.getElementsByTagName('meta'))
+        .map(meta => ({
+          name: meta.getAttribute('name') || meta.getAttribute('property'),
+          content: meta.getAttribute('content')
+        }))
+        .filter(meta => meta.name && meta.content);
+  
+      const headings = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'))
+        .map(heading => ({
+          level: heading.tagName,
+          text: heading.innerText.trim()
+        }));
+  
+      const links = Array.from(document.getElementsByTagName('a'))
+        .map(link => ({
+          text: link.innerText.trim(),
+          href: link.href
+        }));
+  
+      const mainContent = Array.from(document.querySelectorAll('main, article, [role="main"]'))
+        .map(element => element.innerText.trim());
+  
+      return {
+        url: window.location.href,
+        title: document.title,
+        metaTags,
+        headings,
+        links,
+        mainContent,
+        fullText: bodyText
+      };
+    };
+  
     const loadScript = (src) => {
       return new Promise((resolve, reject) => {
+        if (document.querySelector(`script[src="${src}"]`)) {
+          resolve();
+          return;
+        }
         const script = document.createElement('script');
         script.src = src;
         script.onload = resolve;
@@ -214,7 +214,7 @@
         document.head.appendChild(script);
       });
     };
-
+  
     const ChatWidget = {
       sessionId: generateSessionId(),
       pageData: null,
@@ -225,16 +225,19 @@
       customerId: null,
       apiKey: null,
       bcrypt: null,
-
+      lastPageUpdateTime: 0,
+      pageUpdateDebounceTime: 5000, // 5 seconds
+      isAuthenticated: false,
+      authenticationInProgress: false,
+  
       async loadDependencies() {
         try {
-          // Load marked.js
-          await loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js');
-          // Load bcrypt.js
-          await loadScript('https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js');
-          // Store bcrypt reference
-          this.bcrypt = window.dcodeIO ? window.dcodeIO.bcrypt : window.bcrypt;
+          await Promise.all([
+            loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js'),
+            loadScript('https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js')
+          ]);
           
+          this.bcrypt = window.dcodeIO ? window.dcodeIO.bcrypt : window.bcrypt;
           if (!this.bcrypt) {
             throw new Error('Failed to initialize bcrypt');
           }
@@ -243,15 +246,33 @@
           throw error;
         }
       },
-
-      async hashPassword(password) {
-        if (!this.bcrypt) {
-          throw new Error('bcrypt not initialized');
+  
+      async authenticate() {
+        if (this.isAuthenticated || this.authenticationInProgress) {
+          return this.isAuthenticated;
         }
-        const salt = await this.bcrypt.genSalt(12);
-        return this.bcrypt.hashSync(password, salt);
+  
+        this.authenticationInProgress = true;
+  
+        try {
+          const hasValidToken = await this.validateToken();
+          if (hasValidToken) {
+            this.isAuthenticated = true;
+            return true;
+          }
+  
+          const loginSuccess = await this.login();
+          this.isAuthenticated = loginSuccess;
+          return loginSuccess;
+        } catch (error) {
+          console.error('Authentication failed:', error);
+          this.isAuthenticated = false;
+          return false;
+        } finally {
+          this.authenticationInProgress = false;
+        }
       },
-
+  
       async login() {
         try {
           const response = await fetch(`${this.apiUrl}/login`, {
@@ -274,16 +295,14 @@
           this.customerId = data.customer_id;
           this.apiKey = data.api_key;
           
-          // Store all credentials
           this.storeCredentials();
-          
           return true;
         } catch (error) {
           console.error('Login error:', error);
-          throw error;
+          return false;
         }
       },
-
+  
       storeCredentials() {
         localStorage.setItem('chat_token', this.token);
         localStorage.setItem('chat_customer_id', this.customerId);
@@ -297,6 +316,7 @@
         this.token = null;
         this.customerId = null;
         this.apiKey = null;
+        this.isAuthenticated = false;
       },
   
       restoreCredentials() {
@@ -305,12 +325,10 @@
         this.apiKey = localStorage.getItem('chat_api_key');
         return this.token && this.customerId && this.apiKey;
       },
-
+  
       async validateToken() {
-        if (!this.token || !this.customerId || !this.apiKey) {
-          if (!this.restoreCredentials()) {
-            return false;
-          }
+        if (!this.restoreCredentials()) {
+          return false;
         }
   
         try {
@@ -326,13 +344,11 @@
           if (!response.ok) {
             this.clearCredentials();
             return false;
-          }else{
-            const data = await response.json();
-            this.customerId = data.customer_id;
-            this.apiKey = data.api_key;
-    
           }
   
+          const data = await response.json();
+          this.customerId = data.customer_id;
+          this.apiKey = data.api_key;
           return true;
         } catch (error) {
           console.error('Token validation error:', error);
@@ -341,15 +357,17 @@
         }
       },
   
-
-      async sendPageContext(pageData) {
+      async sendPageContext(pageData, force = false) {
+        const now = Date.now();
+        if (!force && now - this.lastPageUpdateTime < this.pageUpdateDebounceTime) {
+          return;
+        }
+  
         try {
-          // First ensure we have valid credentials
-          const isValid = await this.validateToken();
-          if (!isValid) {
-            throw new Error('Invalid token');
+          if (!await this.authenticate()) {
+            throw new Error('Not authenticated');
           }
-      
+  
           const response = await fetch(`${this.apiUrl}/page-context`, {
             method: 'POST',
             headers: {
@@ -364,21 +382,25 @@
               pageContent: pageData
             })
           });
-      
+  
           if (!response.ok) {
             const data = await response.json();
             throw new Error(data.error || 'Failed to send page context');
           }
+  
+          this.lastPageUpdateTime = now;
         } catch (error) {
           console.error('Failed to send page context:', error);
-          // Don't try to login here - let the error propagate up
           throw error;
         }
       },
-
+  
       async sendMessage(message) {
         try {
-          console.log("Inside Send message")
+          if (!await this.authenticate()) {
+            throw new Error('Not authenticated');
+          }
+  
           const response = await fetch(`${this.apiUrl}/send-message`, {
             method: 'POST',
             headers: {
@@ -392,44 +414,37 @@
               pageUrl: window.location.href
             })
           });
-
+  
           const data = await response.json();
-          console.log("*******Response from send message*********", data) 
           if (!response.ok) {
             throw new Error(data.error || 'Failed to send message');
           }
-
+  
           return data;
         } catch (error) {
           console.error('Failed to send message:', error);
           throw error;
         }
       },
-
+  
       async init({ apiUrl, containerId = "ai-chat-widget", customerId, apiKey, username, password }) {
         this.apiUrl = apiUrl;
         this.customerId = customerId;
         this.apiKey = apiKey;
         this.username = username;
         this.password = password;
-
+  
         try {
-          // Load dependencies first
           await this.loadDependencies();
-
-          // Try to validate existing token or login
-          const isValid = await this.validateToken();
-          if (!isValid) {
-            await this.login();
-          }
-
-          // Create Chat Widget DOM Structure
+          await this.authenticate();
+  
           const container = document.getElementById(containerId);
           if (!container) {
             console.error(`Container with ID '${containerId}' not found.`);
             return;
           }
-
+  
+          // Create DOM Structure
           container.innerHTML = `
             <button id="chat-toggle-btn">💬</button>
             <div id="chat-window" class="hidden">
@@ -444,106 +459,95 @@
               </div>
             </div>
           `;
-
+  
           const chatToggleBtn = container.querySelector("#chat-toggle-btn");
           const chatWindow = container.querySelector("#chat-window");
           const closeBtn = container.querySelector("#close-btn");
           const sendBtn = container.querySelector("#send-btn");
           const userInput = container.querySelector("#user-input");
           const messageArea = container.querySelector("#message-area");
-
-          // Scrape initial page content and send it
+  
+          // Initial page content
           this.pageData = scrapePageContent();
-          await this.sendPageContext(this.pageData);
-
-          // Toggle Chat Window
+          await this.sendPageContext(this.pageData, true);
+  
+          // Event Listeners
           chatToggleBtn.addEventListener("click", () => {
             chatWindow.classList.toggle("hidden");
           });
-
-          // Close Chat Window
+  
           closeBtn.addEventListener("click", () => {
             chatWindow.classList.add("hidden");
           });
-
-          // Auto-resize textarea
+  
           userInput.addEventListener("input", () => {
             userInput.style.height = "auto";
             userInput.style.height = (userInput.scrollHeight) + "px";
           });
-
-          // Handle Enter and Shift+Enter
+  
           userInput.addEventListener("keydown", async (event) => {
             if (event.key === "Enter" && !event.shiftKey) {
               event.preventDefault();
               sendBtn.click();
             }
           });
-
-          // Send Message
+  
           sendBtn.addEventListener("click", async () => {
             const userMessage = userInput.value.trim();
-            userInput.value = "";
             if (!userMessage) return;
-
+  
             try {
-             
-
-              // Clear input and reset height
               userInput.value = "";
               userInput.style.height = "auto";
-
-              // Add user message to chat
+  
               const userMessageElem = document.createElement("div");
               userMessageElem.textContent = userMessage;
               userMessageElem.classList.add("user-message");
               messageArea.appendChild(userMessageElem);
-
-              // Send message and handle response
+  
               const responseData = await this.sendMessage(userMessage);
               
               const aiMessageElem = document.createElement("div");
               aiMessageElem.classList.add("ai-message");
               aiMessageElem.innerHTML = marked.parse(responseData.response || "");
               messageArea.appendChild(aiMessageElem);
-
             } catch (error) {
               const errorElem = document.createElement("div");
               errorElem.textContent = `Error: ${error.message}`;
               errorElem.classList.add("ai-message");
               messageArea.appendChild(errorElem);
             }
-
+  
             messageArea.scrollTop = messageArea.scrollHeight;
           });
-
-          // Listen for page content changes
-          const observer = new MutationObserver(async (mutations) => {
-            this.pageData = scrapePageContent();
-            try {
-              const isValid = await this.validateToken();
-              if (!isValid) {
-                await this.login();
+  
+          // Debounced page content observer
+          let debounceTimeout;
+          const observer = new MutationObserver(() => {
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(async () => {
+              this.pageData = scrapePageContent();
+              try {
+                await this.sendPageContext(this.pageData);
+              } catch (error) {
+                console.error("Failed to send updated page context:", error);
               }
-              await this.sendPageContext(this.pageData);
-            } catch (error) {
-              console.error("Failed to send updated page context:", error);
-            }
+            }, this.pageUpdateDebounceTime);
           });
-
+  
           observer.observe(document.body, {
             childList: true,
             subtree: true,
             characterData: true
           });
-
+  
         } catch (error) {
           console.error("Initialization error:", error);
           throw error;
         }
       }
     };
-
+  
     // Initialize the widget
     document.addEventListener("DOMContentLoaded", () => {
       const widget = document.getElementById("ai-chat-widget");
@@ -551,7 +555,7 @@
         console.error("Widget container not found");
         return;
       }
-
+  
       const config = {
         apiUrl: widget.getAttribute("data-api-url"),
         customerId: widget.getAttribute("data-customer-id"),
@@ -559,16 +563,16 @@
         username: widget.getAttribute("data-username"),
         password: widget.getAttribute("data-password")
       };
-
+  
       if (!config.apiUrl || !config.customerId || !config.apiKey || !config.username || !config.password) {
         console.error("Missing required configuration attributes");
         return;
       }
-
+  
       ChatWidget.init(config).catch(error => {
         console.error("Failed to initialize chat widget:", error);
       });
     });
-
+  
     window.ChatWidget = ChatWidget;
   })();
